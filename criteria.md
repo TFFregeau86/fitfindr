@@ -25,9 +25,10 @@ Given a query that matches at least one listing, the agent completes all three
 tool calls and returns a fit card — in at least 4 of 5 tries.
 
 **Why this target:**
-<!-- Why 4 of 5 and not 5 of 5? Something about your search, probably —
-     "my search is a plain keyword match and some phrasings will miss" is a
-     real answer. -->
+I chose 4 of 5 because the search uses matching rules that may not recognize
+every possible way a user could phrase a request. Allowing one miss gives the
+agent some room for variation while still requiring it to complete the happy
+path reliably.
 
 ---
 
@@ -37,64 +38,33 @@ Given a query that matches no listings, the agent stops before calling
 `suggest_outfit` and returns a message naming what to change — 5 of 5 tries.
 
 **Why this target:**
-<!-- Why is 5 of 5 reasonable here when criterion 1 isn't? What's different
-     about this path? -->
+I chose 5 of 5 because an empty search is a clear condition that the program
+can check directly. Once the search returns an empty list, the loop should
+always take the same stop branch instead of depending on model-generated
+wording.
 
----
+3. When search_listings returns a matching listing, the exact listing stored
+   as session["selected_item"] is passed to suggest_outfit in 5 of 5 runs.
 
-## 3. Something about state
+Reason:
+The selected listing is the information that connects the search step to the
+outfit step, so I want to verify that the same item is carried through the
+session every time.
 
-<!-- YOU WRITE THIS ONE.
+4. When create_fit_card receives a valid item and outfit, it returns a
+   non-empty caption that refers to the new item in at least 4 of 5 runs.
 
-     How would you know that the item your search found is the same item the
-     next tool received? Name something countable or observable.
+Reason:
+The model may use different wording on different runs, so I am checking
+that the captions remain relevant instead of requiring identical wording.
 
-     This is the criterion people find hardest, because state failure doesn't
-     look like state failure — it looks like a tool problem. Something that
-     compares session["selected_item"] against what actually reached
-     suggest_outfit is the shape you're after. -->
+5. For 5 test queries with known matching listings, every listing returned by
+   search_listings has a price at or below max_price and a size matching the
+   requested size.
 
-
-
-**Why this target:**
-
-
-
----
-
-## 4. Something about the fit card
-
-<!-- YOU WRITE THIS ONE.
-
-     The fit card calls a model, so the same input can produce different words
-     each time. That's not a bug — it's the nature of the tool. So what would
-     make it acceptable?
-
-     Think about what you'd actually be unhappy to see. A caption that never
-     mentions the price? Two different items producing the same opening
-     sentence? A card longer than a caption anyone would post? Any of those can
-     be turned into a number. -->
-
-
-
-**Why this target:**
-
-
-
----
-
-## 5. Your choice
-
-<!-- YOU WRITE THIS ONE TOO.
-
-     Pick something you actually care about getting right. Speed, the empty
-     wardrobe path, what happens when the model can't be reached, whether the
-     search respects a price ceiling — anything, as long as it names a number
-     or an observable outcome. -->
-
-
-
-**Why this target:**
+Reason:
+Price and size are explicit search inputs, so the returned listings should
+respect both constraints.
 
 
 
