@@ -194,8 +194,6 @@ No major functional criteria remain broken based on the tests and manual runs re
 
 The environment check passes all ten checks, and the matching and empty-search paths both behave as required.
 
-If the instructor requires the exact trace.py output and five formal before/after evaluation runs, those should be recorded separately if they are not already captured in the repository.
-
 Environment Check
 The final environment check passed all ten checks:
 
