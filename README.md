@@ -1,334 +1,167 @@
-# FitFindr
+FitFindr
+Start here
 
-> ### 👋 Start here
->
-> **New to this repo? Read [RUNNING.md](RUNNING.md) first** — setup, every
-> command, and what to do when something breaks.
->
-> Once `python test.py` passes:
->
-> ```bash
-> python app.py listings --full -n 6      # read the data (Milestone 1)
-> python app.py fields                    # what you can filter on
-> python app.py ask 'vintage graphic tee under $30'
-> ```
->
-> All three tools are stubs, so that last command will do nothing useful yet.
-> That's the starting position.
->
-> **The rest of this file is your submission.** Fill it in as you go.
+New to this repo? Read RUNNING.md first — setup, every
+command, and what to do when something breaks.
 
----
+Once python test.py passes:
 
-<!-- ─────────────────────────────────────────────────────────────────────────
-     HOW TO USE THIS FILE
-
-     This is your submission. Fill each section in as you finish the milestone
-     it belongs to — don't leave it all to the end.
-
-     Unit 3 asks for the first five sections. Unit 4 adds the five below them.
-     Leave the unit 4 sections alone until then; they're here so you know
-     what's coming.
-
-     Everything is pasted as TEXT. No screenshots, no images, no video links.
-     A typed block of output gets full credit; a picture of the same output
-     gets none.
-     ───────────────────────────────────────────────────────────────────────── -->
-
-<!-- ═══════════════════════ UNIT 3 — THE BUILD ═══════════════════════ -->
-
-## What This Does
-
-<!-- Three or four sentences: what a user asks for, and what they get back. -->
+python app.py listings --full -n 6
+python app.py fields
+python app.py ask 'vintage graphic tee under $30'
 
 
+All three tools are stubs, so the last command will not produce a useful
+result yet. That is the starting position.
 
----
+The rest of this file is your submission.
 
-## Tool Inventory
+What This Does
 
-<!-- Four lines per tool. This is worth 2 points and it's the single most
-     common place students lose them.
+FitFindr is an agent that helps a user find a secondhand clothing item based on a description, size, and maximum price. It searches the listings data and selects a matching item when one is available. The agent then uses the selected item and the user's wardrobe to suggest an outfit and creates a short fit-card caption. If no listings match the search, the agent stops and tells the user what they can change instead of trying to create an outfit without an item.
 
-     "Returns a list" earns NOTHING. The description has to say what is IN
-     the list.
+Tool Inventory
+search_listings
 
-     The empty case isn't optional either — it's the thing your loop branches
-     on, and if you don't decide it here you'll discover it as a crash in
-     Milestone 5. -->
+What it does: Searches the listings data for items matching the requested description, size, and maximum price.
 
-### `search_listings`
+Inputs: description (string), size (string), max_price (float).
 
-- **What it does:**
-- **Inputs:** <!-- name and type each: `max_price` (float), not "a price" -->
-- **Returns:**
-- **When it has nothing:**
+Returns: A list of listing dictionaries. Each listing contains id, title, description, category, style_tags, size, condition, price, colors, brand, and platform.
 
-### `suggest_outfit`
+When it has nothing: Returns an empty list when no listings match the search criteria.
 
-- **What it does:**
-- **Inputs:**
-- **Returns:**
-- **When it has nothing:**
+suggest_outfit
 
-### `create_fit_card`
+What it does: Uses the selected listing and the user's wardrobe to suggest ways to wear the new item.
 
-- **What it does:**
-- **Inputs:**
-- **Returns:**
-- **When it has nothing:**
+Inputs: new_item (dictionary containing one listing), wardrobe (dictionary containing an items list of wardrobe-item dictionaries).
 
----
+Returns: A string containing outfit suggestions that combine the new item with items from the user's wardrobe.
 
-## Planning Loop
+When it has nothing: When wardrobe["items"] is empty, returns general outfit advice for the new item instead of failing.
 
-<!-- Your branch rule, stated as a rule — the condition AND both paths — plus
-     the file and function that holds it.
+create_fit_card
 
-     Like this:
-       "If search_listings returns an empty list, put a message in the session
-        and stop. Otherwise take the first result and go to suggest_outfit."
-        — agent.py::run_agent
+What it does: Creates a short caption suitable for posting about the selected item and suggested outfit.
 
-     The grader checks your code against what you claim here, so the file and
-     function have to be real. -->
+Inputs: outfit (string containing outfit suggestions), new_item (dictionary containing the selected listing).
 
-**Branch rule:**
+Returns: A short string containing a social-media-style fit-card caption.
 
-**Where it lives:** `agent.py::run_agent`
+When it has nothing: Returns a valid short caption even if the outfit information is limited.
 
-**How the query is parsed:** <!-- regex, string splitting, or asking the model — say which -->
+Planning Loop
 
-**What moves through the session:** <!-- which fields, in what order -->
+Branch rule: If search_listings returns an empty list, the agent puts a message in the session and stops without calling suggest_outfit. Otherwise, it takes the first matching listing, stores it as session["selected_item"], and continues to suggest_outfit.
 
----
+Where it lives: agent.py::run_agent
 
-## Sample Run
+How the query is parsed: The query is parsed by the agent into the description, size, and maximum price values needed by search_listings. The exact parsing implementation will be documented here after the planning loop is built.
 
-<!-- Two things go here.
+What moves through the session: The search results are stored in the session first. When results exist, the first listing is stored as session["selected_item"]. The outfit generated from that item is then stored in the session before being passed to create_fit_card. The final fit card is also stored in the session.
 
-     1. One FULL query and its output, pasted as text.
-     2. Your three per-tool terminal tests — the command and what it printed. -->
+Sample Run
 
-**One full query**
+One full query
 
-```
-$ python app.py ask '...'
+The planning loop has not been implemented yet, so the starter currently produces the following output:
 
-```
+$ python app.py ask 'vintage graphic tee under $30'
 
-**The three tools, tested one at a time**
+  The planning loop isn't built yet — see the TODO in agent.py.
 
-```
+0 model calls this session
+
+
+The three tools, tested one at a time
+
+These tests will be added after the three tools are implemented.
+
 $ python -c "from tools import search_listings; print(search_listings('graphic tee', max_price=30))"
 
-```
+[Tool test output will be added after search_listings is implemented.]
 
-```
 $ python -c "from tools import suggest_outfit; ..."
 
-```
+[Tool test output will be added after suggest_outfit is implemented.]
 
-```
 $ python -c "from tools import create_fit_card; ..."
 
-```
+[Tool test output will be added after create_fit_card is implemented.]
 
----
+How I Used AI
 
-## How I Used AI
+Moment 1
 
-<!-- Two specific moments. What you asked, what came back, what you changed.
+What I asked for: I asked AI to help me understand the fields in the listings data and use them to write specific tool specifications.
 
-     "I used Claude to help me code" is not enough.
+What came back: AI explained that search_listings should accept a description, size, and maximum price, and that it should return a list of listing dictionaries containing the fields from the listings data.
 
-     "I gave Claude my search_listings spec. It returned None on no match
-     instead of an empty list, so I changed it" is the level we want. -->
+What I changed: I used that information to make my search_listings specification more specific and documented that it returns an empty list when there are no matches.
 
-**Moment 1**
+Moment 2
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+What I asked for: I asked AI to help me understand the wardrobe schema before writing the suggest_outfit specification.
 
-**Moment 2**
+What came back: AI pointed out that the wardrobe is a dictionary containing an items list, rather than being a plain list.
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+What I changed: I updated my suggest_outfit specification so that wardrobe is documented as a dictionary containing an items list of wardrobe-item dictionaries.
 
-<!-- ═══════════════════════ UNIT 4 — THE TEST ═══════════════════════
+<!-- ═══════════════════════ UNIT 4 — THE TEST ═══════════════════════ -->
+Run Log — Before
+<!-- Leave this section for Unit 4. -->
+Criterion	Target	Try 1	Try 2	Try 3	Try 4	Try 5	Verdict
+1.							
+2.							
+3.							
+4.							
+5.							
 
-     Don't fill these in during unit 3.
-     ═══════════════════════════════════════════════════════════════════ -->
+Real output from one try, pasted as text, naming the file and function that produced it:
 
----
 
-## Run Log — Before
 
-<!-- Five criteria, five tries each, in this exact format.
+Verdicts and Diagnoses
+#	Criterion	Target	Verdict	How I decided
+1				
+2				
+3				
+4				
+5				
 
-     Five, because your criteria are written out of five. Mark each try PASS
-     or FAIL, count the passes, and read that count against your target — a
-     row targeting 4 of 5 with three PASS cells is MISSED (3/5).
+Diagnoses
 
-     `python run_eval.py --label before` runs everything and writes the table
-     into results/. Paste it here and fill in the verdicts. -->
+Loop Trace
 
-| Criterion | Target | Try 1 | Try 2 | Try 3 | Try 4 | Try 5 | Verdict |
-|---|---|---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |  |  |
+Happy path
 
-**Real output from one try**, pasted as text, naming the file and function
-that produced it:
 
-```
 
-```
 
----
+Empty search
 
-## Verdicts and Diagnoses
 
-<!-- MET or MISSED per criterion against LAST UNIT's target, plus a sentence on
-     how you decided.
 
-     Then, for every miss: which of the four places it happened — a tool, the
-     loop's branch, the session, or the model's output — AND the mechanism.
 
-     Not a diagnosis:  "The fit card was bad."
-     A diagnosis:      "The fit card criterion missed on 2 of 5 items. Both had
-                        an empty brand field. My prompt puts the brand in the
-                        first sentence, so the card opened with a blank and read
-                        like a fragment. The tool worked; the prompt assumed a
-                        field that isn't always there."
+On the MCP move:
 
-     Look for a pattern. Three misses on the same tool is one problem, not
-     three. -->
+The Improvement
 
-| # | Criterion | Target | Verdict | How I decided |
-|---|---|---|---|---|
-| 1 |  |  |  |  |
-| 2 |  |  |  |  |
-| 3 |  |  |  |  |
-| 4 |  |  |  |  |
-| 5 |  |  |  |  |
+What I changed:
 
-**Diagnoses**
+Which failure it was meant to fix:
 
+Run Log — After
+Criterion	Target	Try 1	Try 2	Try 3	Try 4	Try 5	Verdict
+1.							
+2.							
+3.							
+4.							
+5.							
 
+Did it help, and how do I know:
 
----
+What's Still Broken
 
-## Loop Trace
-
-<!-- One full run, printed step by step, with the MCP call visible in it.
-
-     `python app.py ask '...' --trace` once you've added the trace.step()
-     calls in Milestone 2.
-
-     Worth pasting BOTH the happy path and the empty-search path. The empty
-     one should be visibly shorter, because it stops. If your two traces are
-     the same length, your branch isn't working — and this is the fastest way
-     anyone will ever find that out. -->
-
-**Happy path**
-
-```
-
-```
-
-**Empty search**
-
-```
-
-```
-
-**On the MCP move:** <!-- what changed in your code, and whether anything
-behaved differently afterwards. If the rewire didn't work, say exactly where it
-broke — the error text and the last thing that worked. That earns the point in
-full. -->
-
-
-
----
-
-## The Improvement
-
-<!-- What you changed, why your diagnosis pointed at it, and the after-run in
-     the same table format. One change, measured properly.
-
-     `python run_eval.py --label after` -->
-
-**What I changed:**
-
-**Which failure it was meant to fix:**
-
-### Run Log — After
-
-| Criterion | Target | Try 1 | Try 2 | Try 3 | Try 4 | Try 5 | Verdict |
-|---|---|---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |  |  |
-
-**Did it help, and how do I know:**
-
-<!-- If it made things worse, say that. Honestly reported, that earns full
-     credit and is more interesting than one that worked. -->
-
-
-
----
-
-## What's Still Broken
-
-<!-- For each criterion still missed: what you'd do, and why you stopped where
-     you did. "I ran out of time" is fine if it's true. Pretending nothing is
-     left is not. -->
-
-
-
-<!-- ═════════════════════════════════════════════════════════════════════
-
-     SUBMISSION CHECKLIST — unit 3
-
-       [ ] criteria.md has five numbered criteria, each with a target
-       [ ] Each criterion has a reason underneath it
-       [ ] All five unit 3 sections above have real content
-       [ ] Tool Inventory: all three tools, inputs WITH TYPES, a specific
-           return value, and the empty case
-       [ ] Planning Loop names the branch rule and agent.py::run_agent
-       [ ] Sample Run: one full query plus the three per-tool tests, as text
-       [ ] At least four new commits
-       [ ] Repository URL submitted — WRITE IT DOWN, you submit the same one
-           next unit
-
-     SUBMISSION CHECKLIST — unit 4
-
-       [ ] mcp_server.py exists with one tool registered
-           (or a written record of exactly where the rewire broke)
-       [ ] Run Log — Before, five criteria, five tries each
-       [ ] Real output pasted underneath, naming file and function
-       [ ] A verdict on every criterion
-       [ ] A diagnosis for every miss, naming a place AND a mechanism
-       [ ] Loop Trace, with the MCP call visible in it
-       [ ] All three failure modes triggered and handled
-       [ ] One improvement, with Run Log — After in the same format
-       [ ] What's Still Broken
-       [ ] At least four new commits
-       [ ] The SAME repository URL as last unit
-
-     Do not delete and recreate this repository. Your commit history is what
-     shows your criteria existed before your results did.
-     ═════════════════════════════════════════════════════════════════════ -->
-
----
-
-📖 **How to run this project: [RUNNING.md](RUNNING.md)**
+📖 How to run this project: RUNNING.md
